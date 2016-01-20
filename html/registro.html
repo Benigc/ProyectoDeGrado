@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Registro</title>
+	<link rel="stylesheet" href="/estylus.css">
+	<link rel="stylesheet" href="/bootstrap.min.css">
+	<link rel="stylesheet" href="/bootstrap.css">
+</head>
+<body>
+	<head>
+		<h1>REGISTRO DE PERSONAL</h1>
+	</head>
+	
+	<div class="btn-group">
+		<nav>
+			<ul class="nan nav-pills" id="main-menu" rol="menu">
+				<li><a href="/">INICIO</a></li>
+				<li><a href="/html/registro.html">REGISTRO</a></li>
+				<li><a href="/html/video.html">VIDEO</a></li>
+				<li><a href="/html/alarmas.html">ALARMAS</a></li>
+				<li><a href="/html/stream.html">STREAM</a></li>
+			</ul>
+		</nav>
+	</div>
+	<div class="container">
+			<div class="col-xs-3"></div>
+			<div class="col-xs-6" id="alinia" >
+				<form id="registerForm" class="form-horizontal well span2" >
+			     	<h1>Fomulario de Registro</h1>
+			     	<h6 class="subheading">Registrate a través del formulario</h6>
+			     	<hr>
+			     	<div class="control-group" id="aliniar" >
+			     	 	<label for="foto" class="control-label">selecionar una foto</label>
+			     	 	<div class="controls">
+			     	 		<input name="foto" type="file" placeholder="" required class="span3" id="fotos" multiple>
+			     	 	</div>
+			     	 	<h1><img id="fotos" src= 'fotos' alt="imagen"></h1>
+			     	</div>
+			     	<div class="control-group" id="aliniar">
+			     	 	<label for="username" class="control-label">Nombre de usuario</label>
+			     	 	<div class="controls">
+			     	 		<input name="username" type="text" placeholder="Escribe un nombre de usuario" required class="span3 username" id="username">
+			     	 	</div>
+			     	</div>
+			     	<div class="control-group" id="aliniar">
+			     	 	<label for="password" class="control-label">Escribe un Password</label>
+			     	 	<div class="controls">
+			     	 		<input name="password" type="password" placeholder="Escribe un password" required class="span3 password" id="password">
+			     	 	</div>
+			     	</div>
+			     	<div class="control-group" id="aliniar">
+			     	 	<label for="repassword" class="control-label">Seccion</label>
+			     	 	<div class="controls">
+			     	 		<input name="seccion" type="text" placeholder="seccion" required class="span3 seccion" id="seccion">
+			     	 	</div>
+			     	</div>
+			     	<div class="control-group" id="aliniar">
+			     	 	<label for="repassword" class="control-label">Ocupacion</label>
+			     	 	<div class="controls">
+			     	 		<input name="ocupacion" type="text" placeholder="ocupacion" required class="span3 ocupacion" id="ocupacion">
+			     	 	</div>
+			     	</div>
+			     	<div class="control-group" id="aliniar">
+			     	 	<label class="control-label"></label>
+			     	 	<div class="controls">
+			     	 		<button id="registro" >Registrar</button>
+						</div>
+						<input type="submit" class="creartab" name="creartabla" value="creart">
+			     	 	<!--<button class="btn btn-large btn-block btn-primary"><i class="icon-white icon-ok-sign"></i> Registrarme</button>-->
+			    	</div>
+			   	</form>
+			</div>
+			<div id="di" class="col-xs-3"></div>
+		</div>
+	<footer>
+		Proyecto de grado 2015
+	</footer>
+	<script src="/modernizr-2.83main.js" ></script>
+	<script src="/jquery-2.0.3.min.js"></script>
+	<script src="/bootstrap.js"></script>
+	<script src="/bootstrap.min.js"></script>
+	<script src="/registro.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script >
+		io = io.connect()
+	</script>
+	<script>
+
+		$(document).ready(function(){
+		    $("#registro").click(function(){
+		        $("#di").fadeIn();
+		        $("#div2").fadeIn("slow");
+		        $("#div3").fadeIn(3000);
+		    });
+		});
+
+	</script>
+</body>
+</html>

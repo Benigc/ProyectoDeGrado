@@ -1,0 +1,15 @@
+{
+  "name": "tesis",
+  "version": "0.0.2",
+  "private": true,
+  "dependencies": {
+    "express.io": "*",
+    "jade": "*",
+    "serialport": "*",
+    "redis":"*",
+    "sqlite3":"*",
+    "express": "*",
+    "socket.io": "*",
+    "mongoose": "*"
+  }
+}
