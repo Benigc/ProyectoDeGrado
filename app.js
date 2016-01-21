@@ -1,4 +1,4 @@
-require('./mongodb/models')
+//require('./mongodb/models')
 var express = require('express.io');
 var app = express().http().io();
 //var http = require('http').Server(app);
@@ -9,10 +9,10 @@ var path = require('path');
 var spawn = require('child_process').spawn;
 var proc;
 
-var Gpio = require("onoff").Gpio;
-var raspicam = require("raspicam");
+//var Gpio = require("onoff").Gpio;
+//var raspicam = require("raspicam");
 var serialport = require("serialport");
-var user = require('./mongodb/users');
+//var user = require('./mongodb/users');
 app.configure(function(){
 	app.set('port', process.env.PORT || 7076);
 	app.set('views', __dirname + '/html');
@@ -26,16 +26,16 @@ app.configure(function(){
 /*io.route('ready', function(req) {
 	req.io.broadcast('mensaje',{mensaje:a});
 });*/
-var pir = new Gpio(17,'in','both');
+/*var pir = new Gpio(17,'in','both');
 var camara = new raspicam({
   mode: "timelapse",
   output:"./foto/image_%06d.jpg",
   encoding:"jpg",
   timelapse: 50,
   timeout:1000
-});
+});*/
 
-var piserial = new serialport.SerialPort("/dev/ttyAMA0",{
+var piserial = new serialport.SerialPort("COM36",{
   baudrate:9600,
   parser: serialport.parsers.readline("\03")
 });
@@ -51,10 +51,10 @@ camara.on("exit",function(timestamp){
 });
 camara.on("stop",function(err,timestamp){
 
-});*/
+});
 setTimeout(function(){
   camara.stop();
-}, 10000);
+}, 10000);*/
 
 piserial.on( "close" , function (err) {
     console.log("Puerto serial cerrado");
@@ -81,7 +81,7 @@ piserial.on("data", function (data){
   }
 });*/
 
-var sockets = {};
+/*var sockets = {};
 
 app.on('connection', function(socket) {
 
@@ -133,7 +133,7 @@ function startStreaming(io) {
     io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 1000));
   })
 
-}
+}*/
 
 function getDia(){
     var a = new Date();
@@ -160,7 +160,7 @@ app.get('/html/stream.html', function (req, res) {
   res.sendfile(__dirname + '/html/stream.html');
 });
 
-app.use(user);
+//app.use(user);
 app.listen(app.get('port'),function(){
 	console.log('puerto');
 });
