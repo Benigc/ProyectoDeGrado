@@ -1,6 +1,8 @@
 //require('./mongodb/models')
 var express = require('express.io');
 var app = express().http().io();
+
+var UserModel = require('./sql/sqldb')
 //var http = require('http').Server(app);
 //var io = require('socket.io')(http);
 var fs = require('fs');
@@ -22,6 +24,7 @@ app.configure(function(){
 	app.use(express.static(path.join(__dirname, '/css')));
   app.use(express.static(path.join(__dirname, '/cliente')));
   app.use(express.static(path.join(__dirname, '/stream')));
+  app.use(express.static(path.join(__dirname, '/sql')));
 });
 /*io.route('ready', function(req) {
 	req.io.broadcast('mensaje',{mensaje:a});
@@ -134,7 +137,46 @@ function startStreaming(io) {
   })
 
 }*/
+app.io.route('create',function(req){
+    UserModel.createUsersTable();
+    //res.end();
+    req.io.respond({
+        seccuess: 'tabla creado'
+    })
+})
 
+app.io.route("register", function(req,res)
+    {
+    UserModel.registerUser({'username':req.data.username,'password':req.data.password,'hora':getDia(),'imag':req.data.imag,'seccion':req.data.seccion,'ocupacion':req.data.ocupacion}, function(data)
+    {
+        console.log(data + req.data.username + req.data.password+'creado data');
+        if(data)
+        {
+            //si el usuario ya existia en la bd
+            if(data.msg === "existe")
+            {
+                req.io.respond({
+                    success: "exixte"
+                });
+                //res.send("existe", 200);
+            }
+            else
+            {
+                req.io.respond({
+                    success: "creado"
+                });
+                //res.send("creado", 200);
+            }
+        }
+        else
+        {
+            req.io.respond({
+                    success: "error"
+            });
+            //res.send("error", 400);
+        }
+    });
+});
 function getDia(){
     var a = new Date();
     a = a.getMinutes()+":"+a.getSeconds();

@@ -69,24 +69,3 @@ function getDia(){
     	return a;
 }
 module.exports=UserModel;
-//init();
-//UserModel.ejecutar();
-///"DB Prueba", "0.1", "Database Prueba", 200000
-//UserModel.createUsersTable();
-//UserModel.registrarUser({username:'serre',password:'1sdd',hora:getDia()},function(data){
-//	console.log(data.msg+"  registrado");
-//});
-/*var a=getDia();*/
-UserModel.getUser({password:"0700A16ED41C"},function(data){
-	console.log(data.msg+"  ragistrado  ");
-});
-//console.log(getDia() + ' '+ a);
-/*UserModel.getUsers(function(error,data){
-	data.forEach(function(dato){
-		console.log(dato.username + '  '+dato.password);
-	});
-	console.log(data.username + "  mostrar");
-});
-UserModel.getUser({num:'s'},function(data){
-   console.log("Tabla de la posicion "+data.id);
-});*/
