@@ -1,0 +1,44 @@
+doctype html
+html
+  head
+    title= title
+    link(href="http://fonts.googleapis.com/icon?family=Material+Icons", rel="stylesheet")
+    link(type="text/css", rel="stylesheet", href="/bower_components/Materialize/dist/css/materialize.min.css", media="screen,projection")
+    link(rel='stylesheet', href='/stylesheets/style.css')
+
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+  body
+    nav
+      .nav-wrapper
+        a.brand-logo(href='/') Logo
+        a.button-collapse(href='#', data-activates='mobile-demo')
+          i.material-icons menu
+        ul.right.hide-on-med-and-down
+          li
+            a(href='/') INICIO
+          li
+            a(href='/registro') REGISTRO
+          li
+            a(href='/video') VIDEO
+          li
+            a(href='/alarmas') ALARMAS
+          li
+            a(href='/stream') STREAM
+        ul#mobile-demo.side-nav
+          li
+            a(href='/') INICIO
+          li
+            a(href='/registro') REGISTRO
+          li
+            a(href='/video') VIDEO
+          li
+            a(href='/alarmas') ALARMAS
+          li
+            a(href='/stream') STREAM
+    block content
+    script(src="/socket.io/socket.io.js")
+    script(type="text/javascript").
+        io = io.connect()
+    script(type="text/javascript", src="/bower_components/jquery/dist/jquery.js")
+    script(type="text/javascript", src="/bower_components/Materialize/dist/js/materialize.js")
+    script(type="text/javascript", src="/javascripts/index.js")

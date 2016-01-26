@@ -1,210 +1,83 @@
-//require('./mongodb/models')
-var express = require('express.io');
-var app = express().http().io();
-
-var UserModel = require('./sql/sqldb')
-//var http = require('http').Server(app);
-//var io = require('socket.io')(http);
-var fs = require('fs');
+var express = require('express');
 var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 
-var spawn = require('child_process').spawn;
-var proc;
 
-//var Gpio = require("onoff").Gpio;
-//var raspicam = require("raspicam");
-var serialport = require("serialport");
-//var user = require('./mongodb/users');
-app.configure(function(){
-	app.set('port', process.env.PORT || 7076);
-	app.set('views', __dirname + '/html');
-	app.set('view engine', 'html');
-	app.use(express.static(path.join(__dirname, '/s')));
-	app.use(express.static(path.join(__dirname, '/image')));
-	app.use(express.static(path.join(__dirname, '/css')));
-  app.use(express.static(path.join(__dirname, '/cliente')));
-  app.use(express.static(path.join(__dirname, '/stream')));
-  app.use(express.static(path.join(__dirname, '/sql')));
-});
-/*io.route('ready', function(req) {
-	req.io.broadcast('mensaje',{mensaje:a});
-});*/
-/*var pir = new Gpio(17,'in','both');
-var camara = new raspicam({
-  mode: "timelapse",
-  output:"./foto/image_%06d.jpg",
-  encoding:"jpg",
-  timelapse: 50,
-  timeout:1000
-});*/
+var socket_io    = require( "socket.io" );
+var app = express();
+// Socket.io
+var io           = socket_io();
+app.io           = io;
 
-var piserial = new serialport.SerialPort("COM36",{
-  baudrate:9600,
-  parser: serialport.parsers.readline("\03")
-});
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
-/*camara.on("start",function(err, timestamp){
-  console.log("timelapse  at "+timestamp);
-});
-camara.on("read",function(err,timestamp,filename){
-  console.log("video captured with filename: "+ filename + "at "+timestamp);
-});
-camara.on("exit",function(timestamp){
-  console.log("video child process has exited at "+ timestamp);
-});
-camara.on("stop",function(err,timestamp){
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-});
-setTimeout(function(){
-  camara.stop();
-}, 10000);*/
 
-piserial.on( "close" , function (err) {
-    console.log("Puerto serial cerrado");
-});
+/* --------------- RUTAS ------------------- */
 
-piserial.on("error", function (err) {
-    console.error("error", err);
-});
+var index = require('./controllers/index')( io );
+var users = require('./controllers/users');
+var registro = require('./controllers/registro')( io );
 
-piserial.on("open", function () {
-    console.log("Puerto serial listo....");
-});
-piserial.on("data", function (data){
-    data = data.substring(1);
-    console.log(data+" dato");
-});
+app.use( '/' , index );
+app.use( '/users', users );
+app.use( '/registro', registro );
 
-// pir lectura de pir
-/*pir.watch(function(err,value){
-  if (err)exit();
-  console.log("Intruso detectado");
-  if(value == 1){
-    camara.start();
-  }
-});*/
 
-/*var sockets = {};
+/* --------------------- SOCKETS ------------------------ */
 
-app.on('connection', function(socket) {
-
-  sockets[socket.id] = socket;
-  console.log("Total clients connected : ", Object.keys(sockets).length);
-
-  socket.on('disconnect', function() {
-    delete sockets[socket.id];
-
-    // no more sockets, kill the stream
-    if (Object.keys(sockets).length == 0) {
-      app.set('watchingFile', false);
-      if (proc) proc.kill();
-      fs.unwatchFile('./stream/image_stream.jpg');
-    }
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
   });
-
-  socket.on('start-stream', function() {
-    startStreaming(io);
-  });
-
 });
 
+/* --------------------------------------------- */
 
 
-function stopStreaming() {
-  if (Object.keys(sockets).length == 0) {
-    app.set('watchingFile', false);
-    if (proc) proc.kill();
-    fs.unwatchFile('./stream/image_stream.jpg');
-  }
-}
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
-function startStreaming(io) {
+// error handlers
 
-  if (app.get('watchingFile')) {
-    io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 1000));
-    return;
-  }
-
-  var args = ["-w", "640", "-h", "480", "-o", "./stream/image_stream.jpg", "-t", "9999999", "-tl", "0.1"];
-  proc = spawn('raspistill', args);
-
-  console.log('Watching for changes...');
-
-  app.set('watchingFile', true);
-
-  fs.watchFile('./stream/image_stream.jpg', function(current, previous) {
-    io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 1000));
-  })
-
-}*/
-app.io.route('create',function(req){
-    UserModel.createUsersTable();
-    //res.end();
-    req.io.respond({
-        seccuess: 'tabla creado'
-    })
-})
-
-app.io.route("register", function(req,res)
-    {
-    UserModel.registerUser({'username':req.data.username,'password':req.data.password,'hora':getDia(),'imag':req.data.imag,'seccion':req.data.seccion,'ocupacion':req.data.ocupacion}, function(data)
-    {
-        console.log(data + req.data.username + req.data.password+'creado data');
-        if(data)
-        {
-            //si el usuario ya existia en la bd
-            if(data.msg === "existe")
-            {
-                req.io.respond({
-                    success: "exixte"
-                });
-                //res.send("existe", 200);
-            }
-            else
-            {
-                req.io.respond({
-                    success: "creado"
-                });
-                //res.send("creado", 200);
-            }
-        }
-        else
-        {
-            req.io.respond({
-                    success: "error"
-            });
-            //res.send("error", 400);
-        }
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
     });
-});
-function getDia(){
-    var a = new Date();
-    a = a.getMinutes()+":"+a.getSeconds();
-    	return a;
+  });
 }
 
-app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/index.html');
-});
-app.get('/html/registro.html', function (req, res) {
-  res.sendfile(__dirname + '/html/registro.html');
-});
-/*app.get('/cliente/javascript.js', function (req, res) {
-  res.sendfile(__dirname + '/cliente/javascript.js');
-});*/
-app.get('/html/video.html', function (req, res) {
-  res.sendfile(__dirname + '/html/video.html');
-});
-app.get('/html/alarmas.html', function (req, res) {
-  res.sendfile(__dirname + '/html/alarmas.html');
-});
-app.get('/html/stream.html', function (req, res) {
-  res.sendfile(__dirname + '/html/stream.html');
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
 });
 
-//app.use(user);
-app.listen(app.get('port'),function(){
-	console.log('puerto');
-});
-console.log("Puerto 7076" );
-setTimeout(function(){},10);
+
+module.exports = app;

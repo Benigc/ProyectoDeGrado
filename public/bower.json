@@ -1,0 +1,22 @@
+{
+  "name": "publico",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Benigc/ProyectoDeGrado",
+  "authors": [
+    "Ubaldino Zurita <ozzirisc@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "Materialize": "materialize#~0.97.5"
+  }
+}
