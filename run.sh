@@ -1,1 +1,1 @@
-DEBUG=ProyectoDeGrado:* npm start
+nodemon ./bin/www

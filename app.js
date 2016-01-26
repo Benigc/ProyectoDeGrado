@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var mongodb = require('mongoose');
 
 var socket_io    = require( "socket.io" );
 var app = express();
@@ -12,6 +12,7 @@ var app = express();
 var io           = socket_io();
 app.io           = io;
 
+var serialport = require("serialport");
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -25,16 +26,22 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+
 /* --------------- RUTAS ------------------- */
 
 var index = require('./controllers/index')( io );
 var users = require('./controllers/users');
 var registro = require('./controllers/registro')( io );
+var stream = require('./controllers/stream')(io);
+var alarmas = require('./controllers/alarmas')(io);
+var video = require('./controllers/video')(io);
 
 app.use( '/' , index );
 app.use( '/users', users );
 app.use( '/registro', registro );
-
+app.use( '/stream',stream);
+app.use( '/alarmas',alarmas);
+app.use( '/video',video);
 
 /* --------------------- SOCKETS ------------------------ */
 
@@ -44,7 +51,31 @@ io.on('connection', function (socket) {
     console.log(data);
   });
 });
-
+/*----------------------------------------------*/
+mongodb.connect('mongodb://localhost/obreros');
+var Obrero = require('./models/obrero');
+var piserial = new serialport.SerialPort("/dev/ttyUSB0",
+  {
+    baudrate : 9600,
+    parser : serialport.parsers.readline('\03')
+  });
+piserial.on("close",function(err){
+  console.log("Puerto serial cerrado");
+});
+piserial.on("error",function(err){
+  console.log("error",err);
+});
+piserial.on("data",function(data){
+  data = data.substring(1);
+        var obrero = new Obrero();
+        obrero.codigo = data;
+        obrero.save(function(err){
+          if(err)
+            console.log(error);
+          console.log(obrero);
+        })
+  console.log(data+"  dato");
+});
 /* --------------------------------------------- */
 
 
