@@ -28,4 +28,9 @@ $(document).ready(function(){
 
     io.emit('index_hello', { my: 'data' });
 
+    io.on( 'registro', function( msg ) {
+        //$("#pn_mensajes").html( msg.mensaje + "<br/>" )
+        $("input[name=codigo]").val(msg.codigo);
+        console.log(msg);
+    });
 });

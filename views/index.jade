@@ -3,3 +3,19 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  a(href="/registro") Registrar obreros
+  -if(obreros)
+    table
+      thead
+        tr
+          th Nombre
+          th codigo
+          th Hora de registro
+      tbody
+        each obrero in obreros
+          tr
+            td=obrero.nombre
+            td=obrero.codigo 
+            td=obrero.hora
+  -else
+    p No existen obreros registrados  

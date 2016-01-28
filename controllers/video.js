@@ -3,7 +3,7 @@ module.exports = function( io ) {
     var router = app.Router();
     /* GET home page. */
     router.get('/', function(req, res, next) {
-      res.render( 'index' , { title: 'Video' });
+      res.render( 'video' , { title: 'Video' });
     });
 
     return router;

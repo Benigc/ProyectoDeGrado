@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongodb = require('mongoose');
+//var obreros = require('./models/model');
 
 var socket_io    = require( "socket.io" );
 var app = express();
@@ -52,29 +53,55 @@ io.on('connection', function (socket) {
   });
 });
 /*----------------------------------------------*/
-mongodb.connect('mongodb://localhost/obreros');
-var Obrero = require('./models/obrero');
+mongodb.connect('mongodb://localhost/obreros',function(error){
+  if(error){
+    throw error;
+  }else{
+    console.log('base de datos conectado');
+  }
+});
+
+/*--------------------------------------------------------*/
+
 var piserial = new serialport.SerialPort("/dev/ttyUSB0",
   {
     baudrate : 9600,
     parser : serialport.parsers.readline('\03')
   });
+
 piserial.on("close",function(err){
   console.log("Puerto serial cerrado");
 });
 piserial.on("error",function(err){
   console.log("error",err);
 });
+
 piserial.on("data",function(data){
   data = data.substring(1);
-        var obrero = new Obrero();
-        obrero.codigo = data;
-        obrero.save(function(err){
-          if(err)
-            console.log(error);
-          console.log(obrero);
-        })
-  console.log(data+"  dato");
+  var Obrero = require('./models/obrero');
+   // var obrero = new Obrero();
+    //obrero.codigo = data;
+//Auth.findOne({nick: 'noname'}, function(err,obj) { console.log(obj); });
+    Obrero.findOne({codigo:data},function(error,dato){
+      //console.log("dato ----"+dato);
+      //console.log("error---- "+error);
+      if(dato == null){
+        io.emit('registro',{codigo:data});
+        console.log("no existe");
+      }
+      else{
+        console.log("existe");
+        /*Obrero.save(function(err){
+        if(err)
+          console.log(error);
+        })*/
+      }
+    });
+
+
+    
+    
+  //console.log(data+"  dato");
 });
 /* --------------------------------------------- */
 
