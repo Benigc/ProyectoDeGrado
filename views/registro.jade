@@ -2,18 +2,19 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Formulario de  #{title}
   form(method="post") 
-    div
-      label(for='codigo') codigo RFID
+    div#formu
       div
-        input(name="codigo",type="text",placeholder="Leer el RFID",required="required")
-    div
-      label(for="Nombre") Nombre de Usuario
+        label(for='codigo') codigo RFID
+        div
+          input(name="codigo",type="text",placeholder="Leer el RFID",required="required")
       div
-        input(name="nombre",type="text",placeholder="Escribe su Nombre",required="required")
-    div
-      label(for='registro')
+        label(for="Nombre") Nombre de Usuario
+        div
+          input(name="nombre",type="text",placeholder="Escribe su Nombre",required="required")
       div
-        input(type="submit",value='Registrar')
-        a(href="index") Cancelar
+        label(for='registro')
+        div
+          input(type="submit",value='Registrar')
+          a(href="index") Cancelar
