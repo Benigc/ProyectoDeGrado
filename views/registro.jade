@@ -3,7 +3,13 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  form(method="post") 
+  -if(obrero)
+    h1 Obrero Registrado
+    h2 nombre: #{obrero.nombre}
+    h2 codigo: #{obrero.codigo}
+    h2 hora: #{obrero.hora}
+    hr
+  form(method="post")
     div
       label(for='codigo') codigo RFID
       div

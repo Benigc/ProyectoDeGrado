@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongodb = require('mongoose');
-//var obreros = require('./models/model');
+var session = require('express-session');
 
 var socket_io    = require( "socket.io" );
 var app = express();
@@ -20,6 +20,7 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }, resave: true, saveUninitialized: true }))
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -63,7 +64,7 @@ mongodb.connect('mongodb://localhost/obreros',function(error){
 
 /*--------------------------------------------------------*/
 
-var piserial = new serialport.SerialPort("/dev/ttyUSB0",
+var piserial = new serialport.SerialPort("/dev/tty.usbserial-A602UZU2",
   {
     baudrate : 9600,
     parser : serialport.parsers.readline('\03')
@@ -99,8 +100,8 @@ piserial.on("data",function(data){
     });
 
 
-    
-    
+
+
   //console.log(data+"  dato");
 });
 /* --------------------------------------------- */

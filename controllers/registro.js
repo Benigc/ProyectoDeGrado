@@ -2,29 +2,38 @@ module.exports = function( io ) {
     var app = require('express');
     var router = app.Router();
     var Obrero = require('../models/obrero')
-      var a = new Date();
-      //a = a.getHours()+":"+ a.getMinutes()+":"+a.getSeconds();
-  
+    var a = new Date();
+    //a = a.getHours()+":"+ a.getMinutes()+":"+a.getSeconds();
+
 
     /* GET home page. */
-    router.get('/',function(req,res,next){
-      res.render( 'registro' , { title: 'Registro' });
+    router.get('/',function( req , res , next ){
+      var obrero = req.session.obrero || null ;
+      data_obj = { title: 'Registro' };
+      if ( obrero != null ) {
+        data_obj.obrero = obrero;
+      }
+      delete req.session.obrero;
+
+      res.render( 'registro' , data_obj );
     });
+
     router.post('/', function(req, res, next) {
       var obrero = new Obrero({
         codigo: req.body.codigo,
         nombre: req.body.nombre,
         hora: a
       });
-      obrero.save(function(error,documento){
+      obrero.save(function( error , obrero ){
         if(error){
           res.send('Error al guardar datos');
         }
         else{
-          res.redirect('/registro');
+          req.session.obrero = obrero;
+          res.redirect('/registro' );
         }
-  });
-    
+      });
+
     });
 
     io.on('connection', function (socket) {
