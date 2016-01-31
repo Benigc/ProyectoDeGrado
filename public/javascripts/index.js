@@ -21,10 +21,10 @@ $(document).ready(function(){
 
 
 
-  io.on('news', function (data) {
-    console.log(data);
-    io.emit('my other event', { my: 'data' });
-  });
+    io.on('news', function (data) {
+        console.log(data);
+        io.emit('my other event', { my: 'data' });
+    });
 
     io.emit('index_hello', { my: 'data' });
 

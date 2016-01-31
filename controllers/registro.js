@@ -22,7 +22,7 @@ module.exports = function( io ) {
       var obrero = new Obrero({
         codigo: req.body.codigo,
         nombre: req.body.nombre,
-        hora: a
+        hora: [{dia:a}]
       });
       obrero.save(function( error , obrero ){
         if(error){
