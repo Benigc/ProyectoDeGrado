@@ -22,7 +22,8 @@ module.exports = function( io ) {
       var obrero = new Obrero({
         codigo: req.body.codigo,
         nombre: req.body.nombre,
-        hora: [{dia:a}]
+        estado: req.body.estado
+        //hora: [{dia:a}]
       });
       obrero.save(function( error , obrero ){
         if(error){

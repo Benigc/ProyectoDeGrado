@@ -5,7 +5,10 @@ var Schema = mongoose.Schema;
 var ObreroSchema = new Schema({
 	codigo: String,
 	nombre: String,
-	hora: { type: Date, default: Date.now }
+	estado: Boolean,
+	turno: String,
+	hora: { type: Date, default: Date.now },
+	trabajo:{horaEntrada:[],horaSalida:[],horaTotal:[]}
 });
 /*var ObreroModel = mongoose.model('Obrero',ObreroSchema);
 obreros.setModel(ObreroModel);*/

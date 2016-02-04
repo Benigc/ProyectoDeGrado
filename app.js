@@ -12,7 +12,6 @@ var app = express();
 // Socket.io
 var io           = socket_io();
 app.io           = io;
-
 var serialport = require("serialport");
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -64,7 +63,7 @@ mongodb.connect('mongodb://localhost/obreros',function(error){
 
 /*--------------------------------------------------------*/
 
-var piserial = new serialport.SerialPort("/dev/tty.usbserial-A602UZU2",
+var piserial = new serialport.SerialPort("/dev/ttyUSB0",
   {
     baudrate : 9600,
     parser : serialport.parsers.readline('\03')
@@ -86,26 +85,46 @@ piserial.on("data",function(data){
     Obrero.findOne({codigo:data},function(error,dato){
       //console.log("dato ----"+dato);
       //console.log("error---- "+error);
+      console.log(dato);
       if(dato == null){
         io.emit('registro',{codigo:data});
         console.log("no existe");
       }
       else{
+        var a = new Date();
+        var obrero = dato; 
+        var b=[];
+        b=obrero.trabajo.horaEntrada;
+        //console.log(dato.hora.getMinutes());
+        if(b.length==0){
+          b.push(a);
+          obrero.trabajo.horaEntrada=b;
+          io.emit('rfid',{obrero:dato});
+          obrero.save(function(error){
+            if(error)
+              console.log(error);
+            else
+              console.log("hora registrada");
+          });
+          console.log("hora registada en la posicion 0");
+        }
+        else if(a.getMinutes()!= b[b.length-1].getMinutes()){
+          b.push(a);
+          obrero.trabajo.horaEntrada = b;
+          io.emit('rfid',{obrero:dato});
+          obrero.save(function(error){
+            if(error)
+              console.log(error);
+            else
+              console.log("hora registrada");
+          });
+        }
         console.log("existe");
-        /*Obrero.save(function(err){
-        if(err)
-          console.log(error);
-        })*/
       }
     });
-
-
-
-
   //console.log(data+"  dato");
 });
 /* --------------------------------------------- */
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

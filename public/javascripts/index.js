@@ -28,9 +28,13 @@ $(document).ready(function(){
 
     io.emit('index_hello', { my: 'data' });
 
-    io.on( 'registro', function( msg ) {
+    io.on('registro', function( msg ) {
         //$("#pn_mensajes").html( msg.mensaje + "<br/>" )
         $("input[name=codigo]").val(msg.codigo);
         console.log(msg);
+    });
+    io.on('rfid',function(mg){
+        $("table#rfi tbody").append("<tr><td>"+mg.obrero.nombre+"</td><td>"+mg.obrero.codigo+"</td></tr>");
+        console.log(mg.obrero.nombre);
     });
 });

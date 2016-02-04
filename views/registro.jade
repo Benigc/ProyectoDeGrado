@@ -8,19 +8,23 @@ block content
     h2 codigo: #{obrero.codigo}
     h2 hora: #{obrero.hora}
     hr
-  p Formulario de  #{title}
-  form(method="post")
-    div#formu
-      div
+  p.center.blue-text.text-darken-2 Formulario de  #{title}
+  form(method="post").col.s4
+    div.container
+      div.col.s5.center
         label(for='codigo') codigo RFID
-        div
-          input(name="codigo",type="text",placeholder="Leer el RFID",required="required")
-      div
+        div.center
+          input#input_text(name="codigo",type="text",placeholder="Leer el RFID",required="required").center
+      div.col.s5.center
         label(for="Nombre") Nombre de Usuario
-        div
-          input(name="nombre",type="text",placeholder="Escribe su Nombre",required="required")
-      div
+        div.center
+          input(name="nombre",type="text",placeholder="Escribe su Nombre",required="required").center
+      div.col.s5.center
+        label(for="Nombre") Estado
+        div.center
+          input(name="estado",type="text",placeholder="True",required="required").center
+      div.col.s5
         label(for='registro')
-        div
+        div.center
           input(type="submit",value='Registrar')
           a(href="index") Cancelar

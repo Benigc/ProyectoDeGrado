@@ -3,3 +3,8 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  div
+    button(type='button', id='', onclick='startStream()') Start Camera   
+      button(type='button', id='', onclick='StopStream()') Stop Camera
+    .row
+      img#stream(src='')

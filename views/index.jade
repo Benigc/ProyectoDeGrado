@@ -1,21 +1,29 @@
 extends layout
 
 block content
-  h1= title
+  h2= title
   p Welcome to #{title}
   a(href="/registro") Registrar obreros
   -if(obreros)
-    table
+    .container
+      table.striped.centered
+        thead
+          tr
+            th Nombre
+            th codigo
+            th Hora de registro
+        tbody
+          each obrero in obreros
+            tr
+              td=obrero.nombre
+              td=obrero.codigo 
+              td=obrero.hora
+  -else
+    p No existen obreros registrados
+  div.container
+    table#rfi.striped.centerd
       thead
         tr
-          th Nombre
+          th nombre
           th codigo
-          th Hora de registro
       tbody
-        each obrero in obreros
-          tr
-            td=obrero.nombre
-            td=obrero.codigo 
-            td=obrero.hora
-  -else
-    p No existen obreros registrados  

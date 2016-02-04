@@ -8,3 +8,4 @@ module.exports = function( io ) {
 
     return router;
 }
+
