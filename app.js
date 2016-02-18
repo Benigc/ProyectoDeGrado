@@ -27,7 +27,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-
 /* --------------- RUTAS ------------------- */
 
 var index = require('./controllers/index')( io );
@@ -35,14 +34,14 @@ var users = require('./controllers/users');
 var registro = require('./controllers/registro')( io );
 var stream = require('./controllers/stream')(io);
 var alarmas = require('./controllers/alarmas')(io);
-var video = require('./controllers/video')(io);
+var formulario = require('./controllers/formulario')(io);
 
 app.use( '/' , index );
 app.use( '/users', users );
 app.use( '/registro', registro );
-app.use( '/stream',stream);
-app.use( '/alarmas',alarmas);
-app.use( '/video',video);
+app.use( '/stream', stream);
+app.use( '/alarmas', alarmas);
+app.use( '/formulario', formulario);
 
 /* --------------------- SOCKETS ------------------------ */
 
@@ -52,7 +51,7 @@ io.on('connection', function (socket) {
     console.log(data);
   });
 });
-/*----------------------------------------------*/
+/*------------------CONEXION DE MONGODB---------------------*/
 mongodb.connect('mongodb://localhost/obreros',function(error){
   if(error){
     throw error;
@@ -60,8 +59,8 @@ mongodb.connect('mongodb://localhost/obreros',function(error){
     console.log('base de datos conectado');
   }
 });
-
-/*--------------------------------------------------------*/
+var Obrero = require('./models/obrero');
+/*--------------------PUERTO SERIAL------------------------*/
 
 var piserial = new serialport.SerialPort("/dev/ttyUSB0",
   {
@@ -78,7 +77,7 @@ piserial.on("error",function(err){
 
 piserial.on("data",function(data){
   data = data.substring(1);
-  var Obrero = require('./models/obrero');
+  
    // var obrero = new Obrero();
     //obrero.codigo = data;
 //Auth.findOne({nick: 'noname'}, function(err,obj) { console.log(obj); });
@@ -92,12 +91,14 @@ piserial.on("data",function(data){
       }
       else{
         var a = new Date();
+        a=a.getHours()+":"+a.getMinutes();
         var obrero = dato; 
         var b=[];
         b=obrero.trabajo.horaEntrada;
         //console.log(dato.hora.getMinutes());
         if(b.length==0){
           b.push(a);
+          obrero.estado=false;
           obrero.trabajo.horaEntrada=b;
           io.emit('rfid',{obrero:dato});
           obrero.save(function(error){
@@ -108,16 +109,34 @@ piserial.on("data",function(data){
           });
           console.log("hora registada en la posicion 0");
         }
-        else if(a.getMinutes()!= b[b.length-1].getMinutes()){
+        else{
+         if(a.getMinutes()!= b[b.length-1].getMinutes()&& obrero.estado==true){
           b.push(a);
+          obrero.estado=false;
           obrero.trabajo.horaEntrada = b;
           io.emit('rfid',{obrero:dato});
           obrero.save(function(error){
             if(error)
               console.log(error);
             else
-              console.log("hora registrada");
+              console.log("hora de entrada registrada");
           });
+        }
+        else 
+          var c = [];
+          c = obrero.trabajo.horaSalida;
+          if(a.getMinutes()!= c[c.length-1].getMinutes()&& obrero.estado==false){
+            c.push(a);
+            obrero.estado=true;
+            obrero.trabajo.horaSalida = c;
+            io.emit('rfid',{obrero:dato});
+            obrero.save(function(error){
+              if(error)
+                console.log(error);
+              else
+                console.log("hora de salida registrada");
+            });
+          }
         }
         console.log("existe");
       }

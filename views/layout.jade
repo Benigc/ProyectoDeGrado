@@ -10,7 +10,12 @@ html
   body
     nav
       .nav-wrapper
-        a.brand-logo(href='/') Logo
+        a.brand-logo(href='/')
+          ul.right.hide-on-med-and-down
+            li
+              img#logo(src="/imag/img.jpg", alt = "COOPERATIVA", style= "width:65px")
+            li 
+              h4 COOPERATIVA MINERA
         a.button-collapse(href='#', data-activates='mobile-demo')
           i.material-icons menu
         ul.right.hide-on-med-and-down
@@ -19,7 +24,7 @@ html
           li
             a(href='/registro') REGISTRO
           li
-            a(href='/video') VIDEO
+            a(href='/formulario') FORMULARIO
           li
             a(href='/alarmas') ALARMAS
           li
@@ -30,7 +35,7 @@ html
           li
             a(href='/registro') REGISTRO
           li
-            a(href='/video') VIDEO
+            a(href='/formulario') FORMULARIO
           li
             a(href='/alarmas') ALARMAS
           li

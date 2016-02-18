@@ -1,29 +1,14 @@
 extends layout
 
 block content
-  h2= title
-  p Welcome to #{title}
-  a(href="/registro") Registrar obreros
-  -if(obreros)
-    .container
-      table.striped.centered
-        thead
-          tr
-            th Nombre
-            th codigo
-            th Hora de registro
-        tbody
-          each obrero in obreros
-            tr
-              td=obrero.nombre
-              td=obrero.codigo 
-              td=obrero.hora
-  -else
-    p No existen obreros registrados
+  h5.center= title
   div.container
     table#rfi.striped.centerd
       thead
         tr
-          th nombre
-          th codigo
+          th Foto
+          th Nombre
+          th Codigo
+          th Hora Entrada
+          th Hora Salida
       tbody
