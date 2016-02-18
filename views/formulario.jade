@@ -1,0 +1,70 @@
+extends layout
+
+block content
+  div.col.s12
+    div.row 
+      div.col.s6
+        p.center.blue-text.text-darken-2 Formulario de  #{title}
+        form(method="post")
+          div.container
+            div.file-field.input-field
+              div.btn
+                span File
+                input(type='file', multiple='')
+              div.file-path-wrapper
+                input.file-path.validate(name="img" type='text', placeholder='Upload one or more files')
+            div.center
+              label(for='codigo') codigo RFID
+              div.center
+                input#input_text(name="codigo",type="text",placeholder="Leer el RFID",required="required").center
+            div.center
+              input(name="nombre",type="text",id="input_text",placeholder="Escribe su Nombre",required="required").center
+              label(for="input_text")
+            div.center
+              label(for="CI") CI
+              input(name="ci",type="number",placeholder="Escribir CI",required="required").center
+            div.center
+              label Cargo
+                select(name="cargo").browser-default
+                  option(value='', disabled='', selected='') Seleccione turno
+                  option(value='Jefe') Jefe
+                  option(value='Perforista') Perforista
+                  option(value='Peon') Peon
+            div.center
+              label Seccion
+              select(name="seccion").browser-default
+                  option(value='', disabled='', selected='') selecione seccion
+                  option(value='1') sec1
+                  option(value='2') sec2
+                  option(value='3') sec3
+            div.center
+              label Turno
+              div.container
+                a
+                  input#test1(name='turno', type='radio')
+                  label(for='test1') primero
+                a
+                  input#test2(name='turno', type='radio')
+                  label(for='test2') segunda
+                a
+                  input#test3(name='turno', type='radio')
+                  label(for='test3') tersera
+            div.center
+              label(for='registro')
+              div.center
+                button.btn.waves-effect.waves-light(type='submit', name='action') Regitrar
+                  i.material-icons.right send
+      div.col.s6
+          -if(obrero)
+            h1 obrero registrado
+            h5 img:#{obrero.img}
+            h5 nombre: #{obrero.nombre}
+            h5 codigo: #{obrero.codigo}
+            h5 hora: #{obrero.hora}
+            h5 ci: #{obrero.ci}
+            h5 seccion: #{obrero.seccion}
+            h5 estado: #{obrero.estado}
+            h5 cargo: #{obrero.cargo}
+            h5 turno: #{obrero.turno}
+            hr
+                  
