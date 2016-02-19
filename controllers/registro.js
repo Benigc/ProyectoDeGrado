@@ -38,9 +38,41 @@ module.exports = function( io ) {
         //res.render( 'index' , { title: 'Proyecto de grado' });
       });
     //});
-
-    
-    
+    router.post('/',function(req, res){
+      if("ci"==req.body.seleccion){
+        Obrero.findOne({ci:req.body.buscar},function(error,dato){
+          if(error){
+            io.emit('Error al buscar');
+          }
+          else{
+            io.emit('mos',{obrero:dato});
+          }
+        });
+      }
+      else{
+        if("cargo"==req.body.seleccion){
+          Obrero.findOne({cargo:req.body.buscar},function(error,dato){
+            if(error){
+              io.emit('Error al buscar');
+            }
+            else{
+              io.emit('mos',{obrero:dato});
+            }
+          });
+        }
+        else{
+          Obrero.findOne({turno:req.body.buscar},function(error,dato){
+            if(error){
+              io.emit('Error al buscar');
+            }
+            else{
+              io.emit('mos',{obrero:dato});
+            }
+          });  
+        }
+      }
+    })
+    //io.emit('rfid',{obrero:dato});
 
     return router;
 }

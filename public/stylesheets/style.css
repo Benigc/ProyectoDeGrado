@@ -8,3 +8,16 @@ nav {
 a {
   color: #6EEE8D;
 }
+#imge{
+	width: 60px;
+}
+#im{
+	position: absolute;
+	top: 100px;
+	left: 10px;
+	width: 400px;
+}
+#din{
+	position: relative;
+	top: 0px;
+}

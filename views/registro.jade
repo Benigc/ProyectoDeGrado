@@ -4,14 +4,24 @@ block content
   .col.12
     .row
       .col.s2
-        label(for="CI").center Ordenar
-        select.browser-default
-          option(value='', disabled='', selected='') Seleccione turno
-          option(value='1') Turno
-          option(value='2') Cargo
-          option(value='3') CI
-        button.btn.waves-effect.waves-light(type='submit', name='action') Buscar
-          i.material-icons.right send
+        form(method="post")
+          div.container
+            label(for="CI").center Ordenar
+            select(name="seleccion").browser-default
+              option(value='', disabled='', selected='') Seleccione turno
+              option(value='turno') Turno
+              option(value='cargo') Cargo
+              option(value='ci') CI
+            input(name="buscar").center
+            button.btn.waves-effect.waves-light(type='submit', name='action') Buscar
+              i.material-icons.right send
+        -if(obrero)
+          table#resp.striped.centerd
+            thead
+              tr
+                th Foto
+                th Nombre
+            tbody
       .col.s10
         h5.center= "OBREROS REGISTRADOS EN LA COOPERATIVA"        
         -if(obreros)
@@ -32,7 +42,7 @@ block content
                 each obrero in obreros
                   tr
                     td
-                      img(src=obrero.img)
+                      img#imge(src=obrero.img)
                     td=obrero.nombre
                     td=obrero.codigo 
                     td=obrero.ci

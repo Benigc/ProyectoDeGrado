@@ -24,8 +24,8 @@ var ObreroSchema = new Schema({
 	turno: String,
 	foto: String,
 	//hora: { type: Date, default: Date.now },
-	horastrabajadas:{type:Schema.ObjectId, ref:"Trabajo"}
-	//trabajo:{diahoraEntrada:[],horaSalida:[],hora:[],}
+	horastrabajadas:{type:Schema.ObjectId, ref:"Trabajo"},
+	trabajo:{horaEntrada:[],horaSalida:[],hora:[],}
 /*var ObreroModel = mongoose.model('Obrero',ObreroSchema);
 obreros.setModel(ObreroModel);*/
 });

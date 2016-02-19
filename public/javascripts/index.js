@@ -32,4 +32,8 @@ $(document).ready(function(){
         console.log(mg.obrero.nombre);
     });
         //$('select').material_select();
+    io.on('mos',function(mg){
+        console.log(mg.obrero.nombre);
+        $("table#resp tbody").append("<tr><td>img(src="+mg.obrero.img+")</td><td>"+mg.obrero.nombre+"</td></tr>");
+    });
 });

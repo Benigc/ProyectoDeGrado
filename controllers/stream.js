@@ -7,10 +7,10 @@ module.exports = function( io ) {
     });
 
     io.on('connection', function (socket) {
-      socket.on('index_hello', function (data) {
+      socket.on('javascript_simple.html', function (data) {
         console.log(data);
       });
     });
-
+//--/javascript_simple.html
     return router;
 }

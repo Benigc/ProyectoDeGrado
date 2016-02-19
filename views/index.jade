@@ -1,14 +1,19 @@
 extends layout
 
 block content
-  h5.center= title
-  div.container
-    table#rfi.striped.centerd
-      thead
-        tr
-          th Foto
-          th Nombre
-          th Codigo
-          th Hora Entrada
-          th Hora Salida
-      tbody
+  .video.container
+    img#im(src='//192.168.43.13:8080/?action=stream')
+  .row
+    .col.s5
+      p 
+    .col.s7
+      h5.center= title
+      table#rfi.striped.centerd
+        thead
+          tr
+            th Foto
+            th Nombre
+            th Codigo
+            th Hora Entrada
+            th Hora Salida
+        tbody

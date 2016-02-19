@@ -91,7 +91,7 @@ piserial.on("data",function(data){
       }
       else{
         var a = new Date();
-        a=a.getHours()+":"+a.getMinutes();
+        //a=a.getHours()+":"+a.getMinutes();
         var obrero = dato; 
         var b=[];
         b=obrero.trabajo.horaEntrada;

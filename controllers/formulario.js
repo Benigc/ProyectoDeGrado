@@ -20,7 +20,7 @@ module.exports = function( io ) {
 
     router.post('/', function(req, res, next) {
       var obrero = new Obrero({
-        img: req.body.img,
+        img: /imag/+req.body.img,
         codigo: req.body.codigo,
         nombre: req.body.nombre,
         cargo: req.body.cargo,
