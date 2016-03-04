@@ -1,0 +1,16 @@
+extends ../layout
+block content
+  h1 Guardar usuario
+  form( method="post", action="#{action}" )
+    -if( put )
+      input(type="hidden", name="_method", value="PUT")
+    label Nombre
+    br
+    input(type="text", name="username", required="required", value="#{usuario.username}")
+    br
+    label Contrasenia
+    br
+    input(type="text", name="password", required="required", value="#{usuario.password}")
+    br
+    input(type="submit", value="Guardar")
+    a(href="/usuarios") Cancelar

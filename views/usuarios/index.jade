@@ -1,0 +1,51 @@
+extends ../layout
+block content
+  h5 Usuarios
+  form( method="post", action="/login" )
+    label Usuario
+    br
+    input(type="text", name="username", required="required", placeholder="Ingrese usuario")
+    br
+    label Contrasenia
+    br
+    input(type="password", name="password", required="required", placeholder="Ingrese Contrasenia")
+    br
+    input(type="submit", value="Ingresar")
+  br
+  hr
+  p
+    a(href="/usuarios/crear") Crear nuevo usuario
+  -if( usuarios )
+    table
+      thead
+        tr
+          th Nombre
+          th Apellido
+          th 
+          th
+          th
+      tbody
+        -each usuario in usuarios
+          tr
+            td #{usuario.username}
+            td #{usuario.password}
+            td 
+              a(href="/usuarios/#{usuario._id}/ver") Ver
+            td 
+              a(href="/usuarios/#{usuario._id}/editar") Editar
+            td
+              form(method="post", action="/usuarios/#{usuario._id}/eliminar")
+                input(type="hidden", name="_method", value="DELETE")
+                a(href="javascript:void(0);", onclick="if(confirm('¿Está seguro que desea eliminar este registro?')){this.parentNode.submit();}") Eliminar
+  -else
+    p No existen usuarios creados
+  form(method="post" action="/usuarios/buscador")
+    input(type="text", name="buscar", required="required", value="")
+    input(type="submit", value="Buscar")
+  -if( usuarios )
+    table#buscar
+      thead
+        tr
+          th Nombre
+          th Apellido
+      tbody

@@ -1,0 +1,16 @@
+extends ../layout
+block content
+  h5 Obreros
+  p
+  form(action='/create', method='post')
+    div
+        label Username:         
+        input(type='text', name='nombre')
+      div
+        label Password:
+        input(type='password', name='password')
+      div
+        label Confirmar Password:
+        input(type='password', name='password1')
+      div
+        input(type='submit', value='Log In')

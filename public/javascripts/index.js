@@ -36,4 +36,7 @@ $(document).ready(function(){
         console.log(mg.obrero.nombre);
         $("table#resp tbody").append("<tr><td>img(src="+mg.obrero.img+")</td><td>"+mg.obrero.nombre+"</td></tr>");
     });
+    io.on('buscar',function(mg){
+        $("table#buscar tbody").append("<tr><td>img(src="+mg.obrero.nombre+")</td><td>"+mg.obrero.apellido+"</td></tr>");
+    })
 });

@@ -1,0 +1,17 @@
+extends ../layout
+block content
+	h1 #{usuario.usuario} #{usuario.password}
+	div(style='white-space:pre;') #{usuario.usuario}
+	br
+	table
+		thead
+			tr
+				th Nombre
+				th Apellido
+		tboby
+			tr
+				td=usuario.usuario
+				td=usuario.password
+				td 
+					a(href="/usuarios/#{usuario._id}/ver") Ver Detalle
+	a(href="/usuarios") Volver atrás
